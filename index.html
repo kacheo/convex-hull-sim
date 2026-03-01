@@ -7,30 +7,53 @@
   </head>
   <body>
     <div id="app">
-      <div class="toolbar">
-        <select id="algo-select">
-          <option value="jarvis">Jarvis March</option>
-          <option value="graham">Graham Scan</option>
-          <option value="monotone">Monotone Chain</option>
-          <option value="sweep">Sweep Hull</option>
-          <option value="brute">Brute Force</option>
-          <option value="random">Random Incremental</option>
-        </select>
-        <button id="btn-compute">Compute</button>
-        <button id="btn-random">Random Points</button>
-        <button id="btn-clear">Clear</button>
-        <button id="btn-toggle">Run</button>
-      </div>
-      <canvas id="canvas"></canvas>
-      <div class="status-bar">
-        <span id="step-counter">Step: 0</span>
-        <label>
-          Speed
-          <input type="range" id="speed-slider" min="0" max="500" value="5" />
-          <span id="speed-value">5ms</span>
-        </label>
-        <span id="step-description">Click on canvas to add points.</span>
-      </div>
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h1>Convex Hull Simulator</h1>
+        </div>
+
+        <div class="sidebar-section">
+          <label class="section-label">Algorithm</label>
+          <select id="algo-select">
+            <option value="jarvis">Jarvis March</option>
+            <option value="graham">Graham Scan</option>
+            <option value="monotone">Monotone Chain</option>
+            <option value="sweep">Sweep Hull</option>
+            <option value="brute">Brute Force</option>
+            <option value="random">Random Incremental</option>
+          </select>
+        </div>
+
+        <div class="sidebar-section">
+          <label class="section-label">Controls</label>
+          <div class="btn-grid">
+            <button id="btn-compute" class="btn-accent">Compute</button>
+            <button id="btn-toggle">Run</button>
+            <button id="btn-random">Random</button>
+            <button id="btn-clear">Clear</button>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <label class="section-label" for="speed-slider">Speed</label>
+          <div class="speed-row">
+            <input type="range" id="speed-slider" min="0" max="500" value="5" />
+            <span id="speed-value">5ms</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <label class="section-label">Status</label>
+          <div class="status-readout">
+            <span id="step-counter">Step: 0</span>
+            <span id="step-description">Click on canvas to add points.</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="canvas-area">
+        <canvas id="canvas"></canvas>
+      </main>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>

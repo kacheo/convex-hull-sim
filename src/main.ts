@@ -9,6 +9,7 @@ import { MonotoneChain } from './algorithms/MonotoneChain';
 import { SweepHull } from './algorithms/SweepHull';
 import { BruteForce } from './algorithms/BruteForce';
 import { RandomIncremental } from './algorithms/RandomIncremental';
+import { Quickhull } from './algorithms/Quickhull';
 
 const canvasEl = document.getElementById('canvas') as HTMLCanvasElement;
 const algoSelect = document.getElementById('algo-select') as HTMLSelectElement;
@@ -63,6 +64,8 @@ function createAlgo(): ConvexHullAlgo | null {
       return new BruteForce(points);
     case 'random':
       return new RandomIncremental(points);
+    case 'quickhull':
+      return new Quickhull(points);
     default:
       return new JarvisMarch(points);
   }

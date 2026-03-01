@@ -58,6 +58,9 @@ export class CanvasRenderer {
     for (let i = 1; i < hullPoints.length; i++) {
       this.ctx.lineTo(hullPoints[i].x, hullPoints[i].y);
     }
+    this.ctx.closePath();
+    this.ctx.fillStyle = 'rgba(255, 255, 0, 0.08)';
+    this.ctx.fill();
     this.ctx.stroke();
   }
 
@@ -97,12 +100,15 @@ export class CanvasRenderer {
     points: Point[],
     hull: Point[],
     stepLine: Line | null,
-    stepPoints: Point[]
+    stepPoints: Point[],
+    done: boolean = false
   ): void {
     this.clear();
     this.drawPoints(points);
     this.drawHull(hull);
-    if (stepLine) this.drawStepLine(stepLine);
-    this.drawStepPoints(stepPoints);
+    if (!done) {
+      if (stepLine) this.drawStepLine(stepLine);
+      this.drawStepPoints(stepPoints);
+    }
   }
 }

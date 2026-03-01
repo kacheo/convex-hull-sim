@@ -66,37 +66,39 @@ export class RandomIncremental extends ConvexHullAlgo {
       return;
     }
 
-    // Find upper and lower tangent indices
+    // Use edge visibility to find tangent points
     const hullLen = this.convexHullList.length - 1; // Exclude closing point
-    let upperIdx = -1;
-    let lowerIdx = -1;
+
+    // An edge is "visible" from the point if the point is on the CW side
+    const visible: boolean[] = [];
+    for (let k = 0; k < hullLen; k++) {
+      const next = (k + 1) % hullLen;
+      visible[k] = orientation(this.convexHullList[k], this.convexHullList[next], this.currentPoint) === Orientation.Clockwise;
+    }
+
+    // Find tangent points at visibility transitions
+    let rightTangent = -1; // vertex where non-visible → visible
+    let leftTangent = -1;  // vertex after visible → non-visible
 
     for (let k = 0; k < hullLen; k++) {
-      const prev = k === 0 ? hullLen - 1 : k - 1;
-      const next = (k + 1) % hullLen;
-
-      const oPrev = orientation(this.currentPoint, this.convexHullList[k], this.convexHullList[prev]);
-      const oNext = orientation(this.currentPoint, this.convexHullList[k], this.convexHullList[next]);
-
-      if (oPrev !== Orientation.CounterClockwise && oNext === Orientation.CounterClockwise) {
-        upperIdx = k;
+      const prev = (k - 1 + hullLen) % hullLen;
+      if (visible[k] && !visible[prev]) {
+        rightTangent = k;
       }
-      if (oPrev !== Orientation.Clockwise && oNext === Orientation.Clockwise) {
-        lowerIdx = k;
+      if (visible[k] && !visible[(k + 1) % hullLen]) {
+        leftTangent = (k + 1) % hullLen;
       }
     }
 
-    if (upperIdx >= 0 && lowerIdx >= 0) {
-      // Build new hull: go from upperIdx -> lowerIdx (keeping visible part), add new point
+    if (rightTangent >= 0 && leftTangent >= 0) {
+      // Keep the non-visible arc from leftTangent to rightTangent, then add new point
       const newHull: Point[] = [];
-      newHull.push(this.convexHullList[upperIdx]);
-
-      let idx = upperIdx;
-      while (idx !== lowerIdx) {
+      let idx = leftTangent;
+      newHull.push(this.convexHullList[idx]);
+      while (idx !== rightTangent) {
         idx = (idx + 1) % hullLen;
         newHull.push(this.convexHullList[idx]);
       }
-
       newHull.push(this.currentPoint);
       newHull.push(newHull[0]); // Close hull
       this.convexHullList = newHull;

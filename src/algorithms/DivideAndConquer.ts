@@ -53,7 +53,7 @@ export class DivideAndConquer extends ConvexHullAlgo {
       this.done = true;
       if (this.resultStack.length > 0) {
         const hull = this.resultStack.pop()!;
-        this.convexHullList = [...hull, hull[0]];
+        this.convexHullList = [...this.ensureCCW(hull)];
       }
       this.stepLine = null;
       this.highlightPoints = [];
@@ -242,7 +242,7 @@ export class DivideAndConquer extends ConvexHullAlgo {
     if (left.length <= 1) {
       this.resultStack.push(right);
       this.highlightPoints = right;
-      this.convexHullList = [...right, right[0]];
+      this.convexHullList = [...right];
       this.stepLine = null;
       this.collectChildren();
       return;
@@ -293,13 +293,26 @@ export class DivideAndConquer extends ConvexHullAlgo {
       merged.push(right[idx]);
     }
 
-    this.resultStack.push(merged);
-    this.highlightPoints = merged;
-    this.convexHullList = [...merged, merged[0]];
+    const ccwMerged = this.ensureCCW(merged);
+    this.resultStack.push(ccwMerged);
+    this.highlightPoints = ccwMerged;
+    this.convexHullList = [...ccwMerged];
     this.stepLine = null;
     this.descText = `Divide & Conquer: merged hull has ${merged.length} points.`;
 
     this.collectChildren();
+  }
+
+  private ensureCCW(hull: Point[]): Point[] {
+    if (hull.length < 3) return hull;
+    // Compute signed area using the shoelace formula
+    // In screen coordinates (y increases downward): area < 0 = visually CW, area > 0 = visually CCW
+    let area = 0;
+    for (let i = 0; i < hull.length; i++) {
+      const j = (i + 1) % hull.length;
+      area += (hull[j].x - hull[i].x) * (hull[j].y + hull[i].y);
+    }
+    return area < 0 ? [...hull].reverse() : hull;
   }
 
   private simpleHull(pts: Point[]): Point[] {

@@ -4,6 +4,8 @@ An interactive web app for visualizing convex hull algorithms step by step. Buil
 
 **Live demo:** [https://kacheo.github.io/convex-hull-sim/](https://kacheo.github.io/convex-hull-sim/)
 
+This is a modern remake of the original [ConvexHullApp](https://github.com/kacheo/ConvexHullApp), a Java Swing application.
+
 ## Algorithms
 
 - **Jarvis March** — Gift wrapping via orientation checks

@@ -15,6 +15,95 @@ import { ChansAlgorithm } from './algorithms/ChansAlgorithm';
 import { KirkpatrickSeidel } from './algorithms/KirkpatrickSeidel';
 import { IncrementalInsertion } from './algorithms/IncrementalInsertion';
 
+/* ── Algorithm Metadata ────────────────────────────── */
+interface AlgorithmMeta {
+  name: string;
+  timeComplexity: string;
+  spaceComplexity: string;
+  description: string;
+  wikipediaUrl: string;
+}
+
+const ALGO_META: Record<string, AlgorithmMeta> = {
+  jarvis: {
+    name: 'Jarvis March',
+    timeComplexity: 'O(nh)',
+    spaceComplexity: 'O(n)',
+    description: 'Gift-wrapping algorithm that iteratively selects the most counter-clockwise point.',
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Gift_wrapping_algorithm',
+  },
+  graham: {
+    name: 'Graham Scan',
+    timeComplexity: 'O(n log n)',
+    spaceComplexity: 'O(n)',
+    description: 'Sorts points by polar angle, then processes them with a stack to build the hull.',
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Graham_scan',
+  },
+  monotone: {
+    name: 'Monotone Chain',
+    timeComplexity: 'O(n log n)',
+    spaceComplexity: 'O(n)',
+    description: "Andrew's algorithm that builds upper and lower hulls separately by sorting on x-coordinate.",
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Convex_hull_algorithms',
+  },
+  sweep: {
+    name: 'Sweep Hull',
+    timeComplexity: 'O(n log n)',
+    spaceComplexity: 'O(n)',
+    description: 'Sweep-line approach that incrementally adds points sorted by one coordinate.',
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Convex_hull_algorithms',
+  },
+  brute: {
+    name: 'Brute Force',
+    timeComplexity: 'O(n\u00B3)',
+    spaceComplexity: 'O(n)',
+    description: 'Tests every triplet of points, keeping edges where all other points lie on one side.',
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Convex_hull_algorithms',
+  },
+  random: {
+    name: 'Random Incremental',
+    timeComplexity: 'O(n log n) expected',
+    spaceComplexity: 'O(n)',
+    description: 'Inserts points in random order and maintains the hull incrementally.',
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Convex_hull_algorithms',
+  },
+  quickhull: {
+    name: 'Quickhull',
+    timeComplexity: 'O(n log n) avg',
+    spaceComplexity: 'O(n)',
+    description: 'Divide-and-conquer approach inspired by quicksort, recursively splitting by farthest point.',
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Quickhull',
+  },
+  divconq: {
+    name: 'Divide & Conquer',
+    timeComplexity: 'O(n log n)',
+    spaceComplexity: 'O(n)',
+    description: 'Splits points in half, solves recursively, then merges sub-hulls via upper/lower tangents.',
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Convex_hull_algorithms',
+  },
+  chans: {
+    name: "Chan's Algorithm",
+    timeComplexity: 'O(n log h)',
+    spaceComplexity: 'O(n)',
+    description: 'Output-sensitive algorithm combining Graham scan on groups with Jarvis-style wrapping.',
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Chan%27s_algorithm',
+  },
+  kirkpatrick: {
+    name: 'Kirkpatrick-Seidel',
+    timeComplexity: 'O(n log h)',
+    spaceComplexity: 'O(n)',
+    description: 'Output-sensitive "ultimate" algorithm using marriage-before-conquest technique.',
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Kirkpatrick%E2%80%93Seidel_algorithm',
+  },
+  incremental: {
+    name: 'Incremental Insertion',
+    timeComplexity: 'O(n log n)',
+    spaceComplexity: 'O(n)',
+    description: 'Adds points one at a time, updating the hull by finding and replacing visible edges.',
+    wikipediaUrl: 'https://en.wikipedia.org/wiki/Convex_hull_algorithms',
+  },
+};
+
 const canvasEl = document.getElementById('canvas') as HTMLCanvasElement;
 const algoSelect = document.getElementById('algo-select') as HTMLSelectElement;
 const btnCompute = document.getElementById('btn-compute') as HTMLButtonElement;
@@ -151,6 +240,40 @@ speedSlider.addEventListener('input', () => {
   const val = parseInt(speedSlider.value, 10);
   animation.setDelay(val);
   speedValue.textContent = `${val}ms`;
+});
+
+// ── Algorithm Info Tooltip ──────────────────────────
+const btnAlgoInfo = document.getElementById('btn-algo-info') as HTMLButtonElement;
+const algoTooltip = document.getElementById('algo-info-tooltip') as HTMLDivElement;
+const tooltipName = algoTooltip.querySelector('.algo-tooltip-name') as HTMLDivElement;
+const tooltipComplexity = algoTooltip.querySelector('.algo-tooltip-complexity') as HTMLDivElement;
+const tooltipDesc = algoTooltip.querySelector('.algo-tooltip-desc') as HTMLDivElement;
+const tooltipLink = algoTooltip.querySelector('.algo-tooltip-link') as HTMLAnchorElement;
+
+function updateTooltipContent(): void {
+  const meta = ALGO_META[algoSelect.value];
+  if (!meta) return;
+  tooltipName.textContent = meta.name;
+  tooltipComplexity.textContent = `Time: ${meta.timeComplexity}  ·  Space: ${meta.spaceComplexity}`;
+  tooltipDesc.textContent = meta.description;
+  tooltipLink.href = meta.wikipediaUrl;
+}
+
+btnAlgoInfo.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const isHidden = algoTooltip.hidden;
+  algoTooltip.hidden = !isHidden;
+  if (isHidden) updateTooltipContent();
+});
+
+algoSelect.addEventListener('change', () => {
+  if (!algoTooltip.hidden) updateTooltipContent();
+});
+
+document.addEventListener('click', (e) => {
+  if (!algoTooltip.hidden && !algoTooltip.contains(e.target as Node) && e.target !== btnAlgoInfo) {
+    algoTooltip.hidden = true;
+  }
 });
 
 // Initial render

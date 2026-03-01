@@ -14,19 +14,28 @@
 
         <div class="sidebar-section">
           <label class="section-label">Algorithm</label>
-          <select id="algo-select">
-            <option value="jarvis">Jarvis March</option>
-            <option value="graham">Graham Scan</option>
-            <option value="monotone">Monotone Chain</option>
-            <option value="sweep">Sweep Hull</option>
-            <option value="brute">Brute Force</option>
-            <option value="random">Random Incremental</option>
-            <option value="quickhull">Quickhull</option>
-            <option value="divconq">Divide &amp; Conquer</option>
-            <option value="chans">Chan's Algorithm</option>
-            <option value="kirkpatrick">Kirkpatrick-Seidel</option>
-            <option value="incremental">Incremental Insertion</option>
-          </select>
+          <div class="algo-select-row">
+            <select id="algo-select">
+              <option value="jarvis">Jarvis March</option>
+              <option value="graham">Graham Scan</option>
+              <option value="monotone">Monotone Chain</option>
+              <option value="sweep">Sweep Hull</option>
+              <option value="brute">Brute Force</option>
+              <option value="random">Random Incremental</option>
+              <option value="quickhull">Quickhull</option>
+              <option value="divconq">Divide &amp; Conquer</option>
+              <option value="chans">Chan's Algorithm</option>
+              <option value="kirkpatrick">Kirkpatrick-Seidel</option>
+              <option value="incremental">Incremental Insertion</option>
+            </select>
+            <button id="btn-algo-info" class="btn-info" aria-label="Algorithm info">i</button>
+          </div>
+          <div id="algo-info-tooltip" class="algo-tooltip" hidden>
+            <div class="algo-tooltip-name"></div>
+            <div class="algo-tooltip-complexity"></div>
+            <div class="algo-tooltip-desc"></div>
+            <a class="algo-tooltip-link" target="_blank" rel="noopener">Wikipedia</a>
+          </div>
         </div>
 
         <div class="sidebar-section">

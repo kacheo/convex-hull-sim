@@ -85,6 +85,108 @@ body {
   margin-bottom: 8px;
 }
 
+/* ── Algorithm Select Row ──────────────────────────── */
+.algo-select-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.algo-select-row #algo-select {
+  flex: 1;
+  min-width: 0;
+}
+
+.btn-info {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  background: var(--glass-bg);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-style: italic;
+  font-family: Georgia, 'Times New Roman', serif;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.btn-info:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--glass-border-hover);
+  color: var(--text-primary);
+}
+
+.btn-info:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124, 106, 239, 0.2);
+}
+
+/* ── Algorithm Info Tooltip ───────────────────────── */
+.algo-tooltip {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  animation: tooltip-slide-down 150ms ease;
+}
+
+.algo-tooltip[hidden] {
+  display: none;
+}
+
+@keyframes tooltip-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.algo-tooltip-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.algo-tooltip-complexity {
+  font-size: 11px;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.algo-tooltip-desc {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.algo-tooltip-link {
+  font-size: 12px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.algo-tooltip-link:hover {
+  text-decoration: underline;
+  color: var(--accent-hover);
+}
+
 /* ── Select ────────────────────────────────────────── */
 #algo-select {
   width: 100%;

@@ -43,14 +43,16 @@ export class CanvasRenderer {
   drawPoints(points: Point[]): void {
     this.ctx.fillStyle = '#fff';
     for (const p of points) {
-      this.ctx.fillRect(p.x - 1, p.y - 1, 3, 3);
+      this.ctx.beginPath();
+      this.ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+      this.ctx.fill();
     }
   }
 
   drawHull(hullPoints: Point[]): void {
     if (hullPoints.length < 2) return;
     this.ctx.strokeStyle = '#ffff00';
-    this.ctx.lineWidth = 1.5;
+    this.ctx.lineWidth = 2.5;
     this.ctx.beginPath();
     this.ctx.moveTo(hullPoints[0].x, hullPoints[0].y);
     for (let i = 1; i < hullPoints.length; i++) {
@@ -61,7 +63,7 @@ export class CanvasRenderer {
 
   drawStepLine(line: Line): void {
     this.ctx.strokeStyle = '#ff00ff';
-    this.ctx.lineWidth = 1;
+    this.ctx.lineWidth = 2;
     this.ctx.beginPath();
     this.ctx.moveTo(line.p1.x, line.p1.y);
     this.ctx.lineTo(line.p2.x, line.p2.y);
@@ -73,7 +75,7 @@ export class CanvasRenderer {
 
     // Draw lines between step points
     this.ctx.strokeStyle = '#00ff00';
-    this.ctx.lineWidth = 1;
+    this.ctx.lineWidth = 2;
     if (points.length >= 2) {
       this.ctx.beginPath();
       this.ctx.moveTo(points[0].x, points[0].y);
@@ -86,7 +88,7 @@ export class CanvasRenderer {
     // Draw circles at step points
     for (const p of points) {
       this.ctx.beginPath();
-      this.ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+      this.ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
       this.ctx.stroke();
     }
   }

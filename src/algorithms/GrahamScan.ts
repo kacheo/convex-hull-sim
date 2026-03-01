@@ -4,12 +4,17 @@ import { Orientation } from '../types';
 import { ConvexHullAlgo } from './ConvexHullAlgo';
 
 export class GrahamScan extends ConvexHullAlgo {
-  private i = 2;
+  private i = 3;
   private done = false;
   private lowestRightestPt!: Point;
   private p!: Point;
   private q!: Point;
   private r!: Point;
+
+  constructor(points: Point[]) {
+    super(points);
+    this.init();
+  }
 
   protected init(): void {
     // Find lowest point (highest y in screen coords), rightmost on tie
@@ -17,34 +22,31 @@ export class GrahamScan extends ConvexHullAlgo {
     for (const pt of this.pointList) {
       if (
         pt.y > this.lowestRightestPt.y ||
-        (pt.y === this.lowestRightestPt.y && pt.x < this.lowestRightestPt.x)
+        (pt.y === this.lowestRightestPt.y && pt.x > this.lowestRightestPt.x)
       ) {
         this.lowestRightestPt = pt;
       }
     }
 
-    // Sort by polar angle from lowestRightestPt
+    // Sort by polar angle from lowestRightestPt using atan2
     const ref = this.lowestRightestPt;
     this.pointList.sort((a, b) => {
-      if (a === ref) return 1;
-      if (b === ref) return -1;
+      if (a === ref) return -1;
+      if (b === ref) return 1;
 
-      let angleA = Math.atan(Math.abs(a.y - ref.y) / Math.abs(a.x - ref.x));
-      if (a.x < ref.x) angleA = Math.PI - angleA;
-      if (isNaN(angleA)) angleA = 0;
-
-      let angleB = Math.atan(Math.abs(b.y - ref.y) / Math.abs(b.x - ref.x));
-      if (b.x < ref.x) angleB = Math.PI - angleB;
-      if (isNaN(angleB)) angleB = 0;
-
-      return angleA - angleB;
+      const angleA = Math.atan2(ref.y - a.y, a.x - ref.x);
+      const angleB = Math.atan2(ref.y - b.y, b.x - ref.x);
+      if (angleA !== angleB) return angleA - angleB;
+      const distA = (a.x - ref.x) ** 2 + (a.y - ref.y) ** 2;
+      const distB = (b.x - ref.x) ** 2 + (b.y - ref.y) ** 2;
+      return distA - distB;
     });
 
-    // Initialize hull with first 3 sorted points
+    // Initialize hull with first 3 sorted points (ref is at index 0)
     this.convexHullList = [
-      this.lowestRightestPt,
       this.pointList[0],
       this.pointList[1],
+      this.pointList[2],
     ];
 
     this.p = this.convexHullList[0];
@@ -58,7 +60,6 @@ export class GrahamScan extends ConvexHullAlgo {
 
     if (this.i >= this.pointList.length) {
       this.done = true;
-      this.convexHullList.push(this.lowestRightestPt);
       return;
     }
 
@@ -68,7 +69,7 @@ export class GrahamScan extends ConvexHullAlgo {
     this.r = this.pointList[this.i];
 
     const o = orientation(this.p, this.q, this.r);
-    if (o <= Orientation.CounterClockwise || this.i === this.pointList.length - 1) {
+    if (o <= Orientation.CounterClockwise) {
       this.convexHullList.push(this.r);
       this.i++;
     } else if (o === Orientation.Clockwise) {

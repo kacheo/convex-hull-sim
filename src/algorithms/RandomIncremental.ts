@@ -8,6 +8,11 @@ export class RandomIncremental extends ConvexHullAlgo {
   private done = false;
   private currentPoint!: Point;
 
+  constructor(points: Point[]) {
+    super(points);
+    this.init();
+  }
+
   protected init(): void {
     // Shuffle points
     for (let k = this.pointList.length - 1; k > 0; k--) {

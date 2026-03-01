@@ -10,6 +10,11 @@ export class JarvisMarch extends ConvexHullAlgo {
   private r!: Point;
   private done = false;
 
+  constructor(points: Point[]) {
+    super(points);
+    this.init();
+  }
+
   protected init(): void {
     const leftmost = this.getLeftmostPoint();
     this.convexHullList = [leftmost];

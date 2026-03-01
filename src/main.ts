@@ -10,6 +10,7 @@ import { SweepHull } from './algorithms/SweepHull';
 import { BruteForce } from './algorithms/BruteForce';
 import { RandomIncremental } from './algorithms/RandomIncremental';
 import { Quickhull } from './algorithms/Quickhull';
+import { DivideAndConquer } from './algorithms/DivideAndConquer';
 
 const canvasEl = document.getElementById('canvas') as HTMLCanvasElement;
 const algoSelect = document.getElementById('algo-select') as HTMLSelectElement;
@@ -66,6 +67,8 @@ function createAlgo(): ConvexHullAlgo | null {
       return new RandomIncremental(points);
     case 'quickhull':
       return new Quickhull(points);
+    case 'divconq':
+      return new DivideAndConquer(points);
     default:
       return new JarvisMarch(points);
   }

@@ -12,6 +12,7 @@ import { RandomIncremental } from './algorithms/RandomIncremental';
 import { Quickhull } from './algorithms/Quickhull';
 import { DivideAndConquer } from './algorithms/DivideAndConquer';
 import { ChansAlgorithm } from './algorithms/ChansAlgorithm';
+import { KirkpatrickSeidel } from './algorithms/KirkpatrickSeidel';
 
 const canvasEl = document.getElementById('canvas') as HTMLCanvasElement;
 const algoSelect = document.getElementById('algo-select') as HTMLSelectElement;
@@ -72,6 +73,8 @@ function createAlgo(): ConvexHullAlgo | null {
       return new DivideAndConquer(points);
     case 'chans':
       return new ChansAlgorithm(points);
+    case 'kirkpatrick':
+      return new KirkpatrickSeidel(points);
     default:
       return new JarvisMarch(points);
   }

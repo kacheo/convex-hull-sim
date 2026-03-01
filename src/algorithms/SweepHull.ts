@@ -19,6 +19,7 @@ export class SweepHull extends ConvexHullAlgo {
   constructor(points: Point[], canvasHeight: number) {
     super(points);
     this.canvasHeight = canvasHeight;
+    this.init();
   }
 
   protected init(): void {
@@ -81,7 +82,7 @@ export class SweepHull extends ConvexHullAlgo {
           const tIndex = this.convexHullList.indexOf(this.tRm);
           const lIndex = this.convexHullList.indexOf(this.lRm);
           const count = lIndex - tIndex + 1;
-          this.convexHullList.splice(tIndex, count, this.r);
+          this.convexHullList.splice(tIndex, Math.max(count, 0), this.r);
         }
 
         this.tangentIndex = 0;

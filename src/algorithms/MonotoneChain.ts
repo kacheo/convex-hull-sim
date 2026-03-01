@@ -13,6 +13,11 @@ export class MonotoneChain extends ConvexHullAlgo {
   private q!: Point;
   private r!: Point;
 
+  constructor(points: Point[]) {
+    super(points);
+    this.init();
+  }
+
   protected init(): void {
     // Sort by X, then by Y on tie
     this.pointList.sort((a, b) => (a.x === b.x ? a.y - b.y : a.x - b.x));

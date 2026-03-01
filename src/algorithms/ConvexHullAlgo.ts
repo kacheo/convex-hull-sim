@@ -12,7 +12,6 @@ export abstract class ConvexHullAlgo {
     this.pointList = [...points];
     this.convexHullList = [];
     this.stepNum = 0;
-    this.init();
   }
 
   protected abstract init(): void;

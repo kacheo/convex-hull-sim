@@ -11,6 +11,11 @@ export class BruteForce extends ConvexHullAlgo {
   private currentP!: Point;
   private currentQ!: Point;
 
+  constructor(points: Point[]) {
+    super(points);
+    this.init();
+  }
+
   protected init(): void {
     this.currentP = this.pointList[0];
     this.currentQ = this.pointList[1];

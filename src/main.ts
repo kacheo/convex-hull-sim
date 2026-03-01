@@ -32,7 +32,8 @@ function render(): void {
       points,
       algo.getConvexHullList(),
       algo.getCurrentStepLine(),
-      algo.getCurrentStepPoints()
+      algo.getCurrentStepPoints(),
+      algo.isDone()
     );
     stepCounter.textContent = `Step: ${algo.getCurrentStep()}`;
     stepDescription.textContent = algo.getDescription();

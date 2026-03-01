@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Convex Hull Simulator</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="toolbar">
+        <select id="algo-select">
+          <option value="jarvis">Jarvis March</option>
+          <option value="graham">Graham Scan</option>
+          <option value="monotone">Monotone Chain</option>
+          <option value="sweep">Sweep Hull</option>
+          <option value="brute">Brute Force</option>
+          <option value="random">Random Incremental</option>
+        </select>
+        <button id="btn-compute">Compute</button>
+        <button id="btn-random">Random Points</button>
+        <button id="btn-clear">Clear</button>
+        <button id="btn-toggle">Run</button>
+      </div>
+      <canvas id="canvas"></canvas>
+      <div class="status-bar">
+        <span id="step-counter">Step: 0</span>
+        <label>
+          Speed
+          <input type="range" id="speed-slider" min="0" max="500" value="5" />
+          <span id="speed-value">5ms</span>
+        </label>
+        <span id="step-description">Click on canvas to add points.</span>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
